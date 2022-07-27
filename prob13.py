@@ -61,7 +61,7 @@ def function_2():
     print("hello 1")
     
 try:
-   main_1()
+   main()
    function_1()
    function_2()
 except Exception as error:
