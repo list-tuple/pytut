@@ -1,0 +1,17 @@
+"""
+License checking module
+1. open a license_date.txt file
+   a. if the file exists read the date string from the file
+   b. else if the file doesnot exists open the file license_date.txt
+      and write todays date
+
+2.open a license_expiry_date.txt file
+   a. if the file exists read the date string from the file
+   b. else if the file doesnot exists open the file license_expiry_date.txt
+      and write todays date + 90 days
+
+3. check todays date string is equal to expiry date then print message
+   license expired
+
+
+"""
