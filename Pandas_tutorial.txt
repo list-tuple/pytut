@@ -1,0 +1,429 @@
+#Pandas Tutorial
+#Dataset from https://www.tableau.com/sites/default/files/training/global_superstore.zip
+#Reading the xls file(one sheet) into dataframe
+>>> import pandas as pd
+>>> df=pd.read_excel("global_superstore.xls","Orders")
+#listing the columns of the dataframe or xl file sheet
+>>> df.columns
+Index(['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
+       'Customer ID', 'Customer Name', 'Segment', 'City', 'State', 'Country',
+       'Postal Code', 'Market', 'Region', 'Product ID', 'Category',
+       'Sub-Category', 'Product Name', 'Sales', 'Quantity', 'Discount',
+       'Profit', 'Shipping Cost', 'Order Priority'],
+      dtype='object')
+#listing the data types of the columns
+>>> df.dtypes
+Row ID                     int64
+Order ID                  object
+Order Date        datetime64[ns]
+Ship Date         datetime64[ns]
+Ship Mode                 object
+Customer ID               object
+Customer Name             object
+Segment                   object
+City                      object
+State                     object
+Country                   object
+Postal Code              float64
+Market                    object
+Region                    object
+Product ID                object
+Category                  object
+Sub-Category              object
+Product Name              object
+Sales                    float64
+Quantity                   int64
+Discount                 float64
+Profit                   float64
+Shipping Cost            float64
+Order Priority            object
+dtype: object
+#listing the dataframe top 5 rows
+>>> df.head()
+   Row ID         Order ID Order Date  ...    Profit Shipping Cost Order Priority
+0   32298   CA-2012-124891 2012-07-31  ...  762.1845        933.57       Critical
+1   26341    IN-2013-77878 2013-02-05  ... -288.7650        923.63       Critical
+2   25330    IN-2013-71249 2013-10-17  ...  919.9710        915.49         Medium
+3   13524  ES-2013-1579342 2013-01-28  ...  -96.5400        910.16         Medium
+4   47221     SG-2013-4320 2013-11-05  ...  311.5200        903.04       Critical
+
+[5 rows x 24 columns]
+#listing the dataframe top 10 rows
+>>> df.head(10)
+   Row ID         Order ID Order Date  ...     Profit Shipping Cost Order Priority
+0   32298   CA-2012-124891 2012-07-31  ...   762.1845        933.57       Critical
+1   26341    IN-2013-77878 2013-02-05  ...  -288.7650        923.63       Critical
+2   25330    IN-2013-71249 2013-10-17  ...   919.9710        915.49         Medium
+3   13524  ES-2013-1579342 2013-01-28  ...   -96.5400        910.16         Medium
+4   47221     SG-2013-4320 2013-11-05  ...   311.5200        903.04       Critical
+5   22732    IN-2013-42360 2013-06-28  ...   763.2750        897.35       Critical
+6   30570    IN-2011-81826 2011-11-07  ...   564.8400        894.77       Critical
+7   31192    IN-2012-86369 2012-04-14  ...   996.4800        878.38           High
+8   40155   CA-2014-135909 2014-10-14  ...  1906.4850        867.69            Low
+9   40936   CA-2012-116638 2012-01-28  ... -1862.3124        865.74       Critical
+
+[10 rows x 24 columns]
+#listing the dataframe last 5 rows
+>>> df.tail()
+       Row ID        Order ID Order Date  ...   Profit Shipping Cost Order Priority
+51285   29002   IN-2014-62366 2014-06-19  ...   4.5000         0.010         Medium
+51286   35398  US-2014-102288 2014-06-20  ...  -1.1100         0.010         Medium
+51287   40470  US-2013-155768 2013-12-02  ...  11.2308         0.010           High
+51288    9596  MX-2012-140767 2012-02-18  ...   2.4000         0.003         Medium
+51289    6147  MX-2012-134460 2012-05-22  ...   1.8000         0.002           High
+
+[5 rows x 24 columns]
+#listing the shape of the dataframe 
+>>> df.shape
+(51290, 24)
+#listing only one column
+>>> df["Profit"]
+0        762.1845
+1       -288.7650
+2        919.9710
+3        -96.5400
+4        311.5200
+           ...   
+51285      4.5000
+51286     -1.1100
+51287     11.2308
+51288      2.4000
+51289      1.8000
+Name: Profit, Length: 51290, dtype: float64
+#getting the mean of one continous variable column
+>>> df["Profit"].mean()
+28.610982477675964
+#getting the median of one continous variable column
+>>> df["Profit"].median()
+9.24
+#getting the mode of one categorical variable column
+>>> df["Order Priority"].mode()
+0    Medium
+Name: Order Priority, dtype: object
+#describing the continous variable column
+>>> df["Profit"].describe()
+count    51290.000000
+mean        28.610982
+std        174.340972
+min      -6599.978000
+25%          0.000000
+50%          9.240000
+75%         36.810000
+max       8399.976000
+Name: Profit, dtype: float64
+#describing all continous variables columns
+>>> df.describe()
+            Row ID   Postal Code  ...        Profit  Shipping Cost
+count  51290.00000   9994.000000  ...  51290.000000   51290.000000
+mean   25645.50000  55190.379428  ...     28.610982      26.375818
+std    14806.29199  32063.693350  ...    174.340972      57.296810
+min        1.00000   1040.000000  ...  -6599.978000       0.002000
+25%    12823.25000  23223.000000  ...      0.000000       2.610000
+50%    25645.50000  56430.500000  ...      9.240000       7.790000
+75%    38467.75000  90008.000000  ...     36.810000      24.450000
+max    51290.00000  99301.000000  ...   8399.976000     933.570000
+
+[8 rows x 7 columns]
+#describing all continous variables columns including categorical variable columns
+>>> df.describe(include="all")
+
+Warning (from warnings module):
+  File "<pyshell#17>", line 1
+FutureWarning: Treating datetime data as categorical rather than numeric in `.describe` is deprecated and will be removed in a future version of pandas. Specify `datetime_is_numeric=True` to silence this warning and adopt the future behavior now.
+
+Warning (from warnings module):
+  File "<pyshell#17>", line 1
+FutureWarning: Treating datetime data as categorical rather than numeric in `.describe` is deprecated and will be removed in a future version of pandas. Specify `datetime_is_numeric=True` to silence this warning and adopt the future behavior now.
+             Row ID        Order ID  ... Shipping Cost Order Priority
+count   51290.00000           51290  ...  51290.000000          51290
+unique          NaN           25035  ...           NaN              4
+top             NaN  CA-2014-100111  ...           NaN         Medium
+freq            NaN              14  ...           NaN          29433
+first           NaN             NaN  ...           NaN            NaN
+last            NaN             NaN  ...           NaN            NaN
+mean    25645.50000             NaN  ...     26.375818            NaN
+std     14806.29199             NaN  ...     57.296810            NaN
+min         1.00000             NaN  ...      0.002000            NaN
+25%     12823.25000             NaN  ...      2.610000            NaN
+50%     25645.50000             NaN  ...      7.790000            NaN
+75%     38467.75000             NaN  ...     24.450000            NaN
+max     51290.00000             NaN  ...    933.570000            NaN
+
+[13 rows x 24 columns]
+#getting distinct of categorical variable column
+>>> df["Order Priority"].unique()
+array(['Critical', 'Medium', 'High', 'Low'], dtype=object)
+#getting the number of null values in the dataframe
+>>> df.isnull().sum()
+Row ID                0
+Order ID              0
+Order Date            0
+Ship Date             0
+Ship Mode             0
+Customer ID           0
+Customer Name         0
+Segment               0
+City                  0
+State                 0
+Country               0
+Postal Code       41296
+Market                0
+Region                0
+Product ID            0
+Category              0
+Sub-Category          0
+Product Name          0
+Sales                 0
+Quantity              0
+Discount              0
+Profit                0
+Shipping Cost         0
+Order Priority        0
+dtype: int64
+>>> df.head()
+   Row ID         Order ID Order Date  ...    Profit Shipping Cost Order Priority
+0   32298   CA-2012-124891 2012-07-31  ...  762.1845        933.57       Critical
+1   26341    IN-2013-77878 2013-02-05  ... -288.7650        923.63       Critical
+2   25330    IN-2013-71249 2013-10-17  ...  919.9710        915.49         Medium
+3   13524  ES-2013-1579342 2013-01-28  ...  -96.5400        910.16         Medium
+4   47221     SG-2013-4320 2013-11-05  ...  311.5200        903.04       Critical
+
+[5 rows x 24 columns]
+#applying filter on a continous variable column
+>>> df[df["Profit"]>1000]
+       Row ID         Order ID  ... Shipping Cost Order Priority
+8       40155   CA-2014-135909  ...     867.69000            Low
+12      45794     SA-2011-1830  ...     832.41000       Critical
+14      27704    IN-2013-73951  ...     804.54000       Critical
+17      12069  ES-2014-1651774  ...     778.32000            Low
+23      13528  ES-2013-2860574  ...     730.91000           High
+...       ...              ...  ...           ...            ...
+13013   23447    IN-2011-77892  ...      23.95000         Medium
+14843   39450   CA-2014-140151  ...      20.00054         Medium
+16062   39785   CA-2013-158841  ...      17.83000       Critical
+19307   21850    IN-2011-50060  ...      13.25000         Medium
+39564   12383  ES-2012-5671193  ...       2.34000         Medium
+
+[147 rows x 24 columns]
+>>> df[df["Profit"]>1000]["Profit"]
+8        1906.4850
+12       1151.4000
+14       1036.0800
+17       3979.0800
+23       1898.4000
+           ...    
+13013    1150.2000
+14843    6719.9808
+16062    2799.9840
+19307    1038.4200
+39564    2461.3200
+Name: Profit, Length: 147, dtype: float64
+>>> df.head()
+   Row ID         Order ID Order Date  ...    Profit Shipping Cost Order Priority
+0   32298   CA-2012-124891 2012-07-31  ...  762.1845        933.57       Critical
+1   26341    IN-2013-77878 2013-02-05  ... -288.7650        923.63       Critical
+2   25330    IN-2013-71249 2013-10-17  ...  919.9710        915.49         Medium
+3   13524  ES-2013-1579342 2013-01-28  ...  -96.5400        910.16         Medium
+4   47221     SG-2013-4320 2013-11-05  ...  311.5200        903.04       Critical
+
+[5 rows x 24 columns]
+#applying multiple filter on a continous variable column
+>>> df[(df["Profit"]>1000) & (df["Shipping Cost"]<600)]
+       Row ID         Order ID  ... Shipping Cost Order Priority
+66      16653  IT-2014-4540740  ...     593.91000           High
+70      21191    IN-2013-40050  ...     589.36000           High
+72      49085     CG-2013-6110  ...     588.13000           High
+76      31806   CA-2012-145352  ...     581.12000         Medium
+78      24443    IN-2011-62506  ...     576.71000         Medium
+...       ...              ...  ...           ...            ...
+13013   23447    IN-2011-77892  ...      23.95000         Medium
+14843   39450   CA-2014-140151  ...      20.00054         Medium
+16062   39785   CA-2013-158841  ...      17.83000       Critical
+19307   21850    IN-2011-50060  ...      13.25000         Medium
+39564   12383  ES-2012-5671193  ...       2.34000         Medium
+
+[132 rows x 24 columns]
+>>> df[(df["Profit"]>1000) & (df["Shipping Cost"]<600)][["Profit","Shipping Cost"]]
+          Profit  Shipping Cost
+66     1050.1500      593.91000
+70     1055.2500      589.36000
+72     1523.5200      588.13000
+76     3177.4750      581.12000
+78     1183.9500      576.71000
+...          ...            ...
+13013  1150.2000       23.95000
+14843  6719.9808       20.00054
+16062  2799.9840       17.83000
+19307  1038.4200       13.25000
+39564  2461.3200        2.34000
+
+[132 rows x 2 columns]
+>>> df.columns
+Index(['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
+       'Customer ID', 'Customer Name', 'Segment', 'City', 'State', 'Country',
+       'Postal Code', 'Market', 'Region', 'Product ID', 'Category',
+       'Sub-Category', 'Product Name', 'Sales', 'Quantity', 'Discount',
+       'Profit', 'Shipping Cost', 'Order Priority'],
+      dtype='object')
+>>> df.head()["Segment"]
+0       Consumer
+1      Corporate
+2       Consumer
+3    Home Office
+4       Consumer
+Name: Segment, dtype: object
+#applying filter on a categorical variable column
+>>> df[df["Segment"]=="Consumer"]
+       Row ID        Order ID  ... Shipping Cost Order Priority
+0       32298  CA-2012-124891  ...       933.570       Critical
+2       25330   IN-2013-71249  ...       915.490         Medium
+4       47221    SG-2013-4320  ...       903.040       Critical
+6       30570   IN-2011-81826  ...       894.770       Critical
+7       31192   IN-2012-86369  ...       878.380           High
+...       ...             ...  ...           ...            ...
+51277   37361  CA-2012-111780  ...         0.020           High
+51278   43818    NI-2011-4700  ...         0.020           High
+51281    6039  MX-2014-169530  ...         0.019           High
+51286   35398  US-2014-102288  ...         0.010         Medium
+51289    6147  MX-2012-134460  ...         0.002           High
+
+[26518 rows x 24 columns]
+>>> df[df["Segment"]=="Consumer"]["Segment"]
+0        Consumer
+2        Consumer
+4        Consumer
+6        Consumer
+7        Consumer
+           ...   
+51277    Consumer
+51278    Consumer
+51281    Consumer
+51286    Consumer
+51289    Consumer
+Name: Segment, Length: 26518, dtype: object
+>>> df["State"]
+0               New York
+1        New South Wales
+2             Queensland
+3                 Berlin
+4                  Dakar
+              ...       
+51285          Hiroshima
+51286              Texas
+51287         California
+51288          São Paulo
+51289            Managua
+Name: State, Length: 51290, dtype: object
+#applying multiple filter on a categorical variable column
+>>> df[(df["Segment"]=="Consumer") & (df["State"]=="New York")]
+       Row ID        Order ID  ... Shipping Cost Order Priority
+0       32298  CA-2012-124891  ...        933.57       Critical
+36      36423  CA-2011-160766  ...        675.15           High
+50      40046  US-2012-163825  ...        632.05           High
+121     37923  CA-2011-145541  ...        499.55         Medium
+147     32998  CA-2012-114069  ...        477.15       Critical
+...       ...             ...  ...           ...            ...
+51060   35119  CA-2014-141873  ...          0.13         Medium
+51068   39813  CA-2013-132899  ...          0.13         Medium
+51110   36503  CA-2012-102015  ...          0.11         Medium
+51165   32881  CA-2012-131338  ...          0.09         Medium
+51211   38308  US-2011-135881  ...          0.07         Medium
+
+[643 rows x 24 columns]
+>>> df.columns
+Index(['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
+       'Customer ID', 'Customer Name', 'Segment', 'City', 'State', 'Country',
+       'Postal Code', 'Market', 'Region', 'Product ID', 'Category',
+       'Sub-Category', 'Product Name', 'Sales', 'Quantity', 'Discount',
+       'Profit', 'Shipping Cost', 'Order Priority'],
+      dtype='object')
+>>> df.head()
+   Row ID         Order ID Order Date  ...    Profit Shipping Cost Order Priority
+0   32298   CA-2012-124891 2012-07-31  ...  762.1845        933.57       Critical
+1   26341    IN-2013-77878 2013-02-05  ... -288.7650        923.63       Critical
+2   25330    IN-2013-71249 2013-10-17  ...  919.9710        915.49         Medium
+3   13524  ES-2013-1579342 2013-01-28  ...  -96.5400        910.16         Medium
+4   47221     SG-2013-4320 2013-11-05  ...  311.5200        903.04       Critical
+
+[5 rows x 24 columns]
+#adding a new continous column with value 0 in each cell
+>>> df["My_column"]=0
+>>> df["My_column"]
+0        0
+1        0
+2        0
+3        0
+4        0
+        ..
+51285    0
+51286    0
+51287    0
+51288    0
+51289    0
+Name: My_column, Length: 51290, dtype: int64
+#getting a value of particular cell of sheet
+>>> df.loc[3,"Sub-Category"]
+'Phones'
+>>> df.loc[2,"Sub-Category"]
+'Phones'
+>>> df.loc[0,"Sub-Category"]
+'Accessories'
+>>> df.loc[1,"Sub-Category"]
+'Chairs'
+#modifying the value of a particular cell
+>>> df.loc[1,"Sub-Category"]=df.loc[1,"Sub-Category"]+"mychange"
+>>> df.loc[1,"Sub-Category"]
+'Chairsmychange'
+>>> df.loc[0:2,"Sub-Category"]
+0       Accessories
+1    Chairsmychange
+2            Phones
+Name: Sub-Category, dtype: object
+>>> df.iloc[1,16]
+'Chairsmychange'
+>>> df.columns
+Index(['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
+       'Customer ID', 'Customer Name', 'Segment', 'City', 'State', 'Country',
+       'Postal Code', 'Market', 'Region', 'Product ID', 'Category',
+       'Sub-Category', 'Product Name', 'Sales', 'Quantity', 'Discount',
+       'Profit', 'Shipping Cost', 'Order Priority', 'My_column'],
+      dtype='object')
+>>> df.head()["My_column"]
+0    0
+1    0
+2    0
+3    0
+4    0
+Name: My_column, dtype: int64
+#modifying the value of particular cells
+>>> for i in range(df.shape[0]):
+	if i%2 == 1:
+		df.loc[i,"My_column"]=-1
+
+		
+>>> df.head()["My_column"]
+0    0
+1   -1
+2    0
+3   -1
+4    0
+Name: My_column, dtype: int64
+>>> df.head()
+   Row ID         Order ID Order Date  ... Shipping Cost Order Priority My_column
+0   32298   CA-2012-124891 2012-07-31  ...        933.57       Critical         0
+1   26341    IN-2013-77878 2013-02-05  ...        923.63       Critical        -1
+2   25330    IN-2013-71249 2013-10-17  ...        915.49         Medium         0
+3   13524  ES-2013-1579342 2013-01-28  ...        910.16         Medium        -1
+4   47221     SG-2013-4320 2013-11-05  ...        903.04       Critical         0
+
+[5 rows x 25 columns]
+>>> df.columns
+Index(['Row ID', 'Order ID', 'Order Date', 'Ship Date', 'Ship Mode',
+       'Customer ID', 'Customer Name', 'Segment', 'City', 'State', 'Country',
+       'Postal Code', 'Market', 'Region', 'Product ID', 'Category',
+       'Sub-Category', 'Product Name', 'Sales', 'Quantity', 'Discount',
+       'Profit', 'Shipping Cost', 'Order Priority', 'My_column'],
+      dtype='object')
+>>> df_1=df[["Postal Code","Order ID"]]
+>>> df_2=df[["Sales","Profit"]]
+>>> 
